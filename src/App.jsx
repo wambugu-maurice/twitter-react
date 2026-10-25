@@ -6,6 +6,8 @@ import Signup from "./pages/Signup"
 import Login from "./pages/Login"
 import './App.css'
 import Profile from "./components/Profile"
+import PostsFeed from "./components/PostsFeed"
+import RepostsFeed from "./components/RepostsFeed"
 
 function App() {
   return (
@@ -14,7 +16,10 @@ function App() {
             <Route element={<ProtectedLayout />}>
                 <Route  element={<Layout />}>
                     <Route path="home" element={<Home />} />
-                    <Route path="profile" element={<Profile />} />
+                    <Route path="/profile" element={<Profile />}>
+                        <Route index element={<PostsFeed />} />
+                        <Route path="reposts" element={<RepostsFeed />} />
+                    </Route>
                 </Route>
             </Route>
             <Route path="signup" element={<Signup />}/>

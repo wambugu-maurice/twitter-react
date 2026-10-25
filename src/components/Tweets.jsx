@@ -1,9 +1,12 @@
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore"
+import { arrayRemove, arrayUnion, collection, doc, increment, onSnapshot, orderBy, query, updateDoc } from "firebase/firestore"
 import { useEffect, useState } from "react"
-import { db } from "../../firebase"
+import { auth, db } from "../../firebase"
 import { MdOutlineReply } from "react-icons/md"
-import { BiRepost } from "react-icons/bi"
 import { AiOutlineShareAlt } from "react-icons/ai"
+import toast from "react-hot-toast"
+import { CiHeart } from "react-icons/ci"
+import { FcLike } from "react-icons/fc"
+import { BiRepost } from "react-icons/bi"
 
  
 
@@ -11,6 +14,8 @@ function Tweets() {
   const [tweets, setTweets] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState("")
+
+  const userId = auth.currentUser.uid
 
   useEffect(()=>{
     const tweetsRef = query(collection(db, "tweets"), orderBy("postedOn", "desc"))
@@ -25,6 +30,40 @@ function Tweets() {
   },[])
 
 
+  async function handleLikeTweet(tweetId,alreadyLiked) {
+    setError("")
+    try {
+      const tweetRef = doc(db,"tweets",tweetId)
+      await updateDoc(tweetRef,{
+        likedBy: alreadyLiked ? arrayRemove(userId) : arrayUnion(userId),
+        likes: increment(alreadyLiked ? -1 : 1)
+      }) 
+    } catch (error) {
+      setError(error.message)
+      toast.error(error.message)
+      
+    }
+    
+  }
+
+  async function handleRepost(tweetId,alreadyReweeted) {
+    setError("")
+    try {
+      const tweetRef = doc(db,"tweets",tweetId);
+      await updateDoc(tweetRef,{
+        retweetedBy: alreadyReweeted ? arrayRemove(userId):arrayUnion(userId),
+        retweets: increment(alreadyReweeted ? -1 : 1)  
+      })
+      
+    } catch (error) {
+      setError(error.message)
+      toast.error(error.message)
+      
+    }
+    
+  }
+
+
 
   return (
     
@@ -33,8 +72,11 @@ function Tweets() {
   {error && <p className="tweetError">{error}</p>}
 
   {!isLoading && !error &&
-    tweets.map((tweet) => (
-      <article className="tweetCard" key={tweet.id}>
+    tweets.map((tweet) => {
+      const alreadyLiked = tweet.likedBy?.includes(userId)
+      const alreadyReweeted = tweet.retweetedBy?.includes(userId)
+      return(
+        <article className="tweetCard" key={tweet.id}>
         <div className="tweetAvatar">
           {tweet.name?.charAt(0).toUpperCase()}
         </div>
@@ -61,14 +103,12 @@ function Tweets() {
               <span>Reply</span>
             </button>
 
-            <button type="button" aria-label="Repost">
-              <span><BiRepost /></span>
-              <span>Repost</span>
+            <button onClick={()=>handleRepost(tweet.id,alreadyReweeted)}>
+             {tweet.retweetedBy?.includes(userId) ? <BiRepost className="rtBtn" /> : <BiRepost />} {tweet.retweets}
             </button>
 
-            <button type="button" aria-label="Like">
-              <span>♡</span>
-              <span>Like</span>
+            <button onClick={()=>handleLikeTweet(tweet.id,alreadyLiked)} >
+              {tweet.likedBy?.includes(userId) ? <FcLike /> :<CiHeart />} {tweet.likes}
             </button>
 
             <button type="button" aria-label="Share">
@@ -78,7 +118,8 @@ function Tweets() {
           </div>
         </div>
       </article>
-    ))}
+      )
+      })}
 </div>
 
   )

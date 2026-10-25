@@ -4,9 +4,12 @@ import { SlMagnifier } from "react-icons/sl"
 import { TbMessages } from "react-icons/tb"
 import { Link } from "react-router-dom"
 import LogoutModal from "./LogoutModal"
+import useUser from "../hooks/useUser"
 
 
 function Sidebar() {
+    const{loggedUser}=useUser()
+
     const links =[
         {
             title:"home",
@@ -45,6 +48,7 @@ function Sidebar() {
                     </li>
                 ))
             }
+            <p>@{loggedUser?.name}</p>
             <LogoutModal />
         </ul>
     </div>
