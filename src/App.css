@@ -1,0 +1,389 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.signupSection,.loginSection{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+    background: url("/images/loginbg.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    
+}
+
+.signupDiv,.loginDiv{
+    display: flex;
+    width: 80%;
+    height: 86vh;
+    background-color: #F5F1E8;
+}
+
+.signupMsg{
+    width: 50%;
+    background-color: #14110F;
+    height: 100%;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #F3EBDD;
+}
+.loginMsg{
+    width: 50%;
+    background-color: #14110F;
+    height: 100%;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #F3EBDD;
+}
+
+.signupMsg h2{
+    font-size: 40px;
+    color: #D4AF6A;
+}
+
+.signupMsg p{
+    font-size: 15px;
+    color: #B8AE9C;
+}
+
+.loginMsg h2{
+   font-size: 40px;
+    color: #D4AF6A; 
+}
+
+.loginMsg p{
+    font-size: 15px;
+    color: #B8AE9C;
+}
+
+.formDiv{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.formDiv form{
+    width: 80%;
+}
+
+.formDiv input{
+    background-color: #FFFFFF;
+    border: 1px solid #E2D9C6;
+    color: #14110F;
+}
+
+.formDiv input:focus{
+    border-color: #D4AF6A;
+    outline: none;
+}
+
+.formDiv button{
+    background-color: #D4AF6A;
+    color: #14110F;
+    border: 1px solid #D4AF6A;
+    display: flex;
+    width: 200px;
+    padding: 10px;
+    text-align: center;
+    margin: 5px;
+}
+
+.formDiv button:hover{
+    background-color: #14110F;
+    color: #D4AF6A;
+}
+
+.formDiv button:disabled{
+    background-color: #E2D9C6;
+    color: #8A8170;
+    border-color: #E2D9C6;
+}
+
+.errorContainer {
+  height: 20px;
+  margin-bottom: 4px;
+}
+
+.errorMsg {
+  color: #B4533C;
+  font-size: 12px;
+  line-height: 20px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.authLink{
+    color: blue;
+}
+
+/* From Uiverse.io by alexruix */ 
+.loaderContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  margin: auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader:before {
+  content: '';
+  width: 48px;
+  height: 5px;
+  background: #f0808050;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  border-radius: 50%;
+  animation: shadow324 0.5s linear infinite;
+}
+
+.loader:after {
+  content: '';
+  width: 100%;
+  height: 100%;
+  background: #f08080;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 4px;
+  animation: jump7456 0.5s linear infinite;
+}
+
+@keyframes jump7456 {
+  15% {
+    border-bottom-right-radius: 3px;
+  }
+
+  25% {
+    transform: translateY(9px) rotate(22.5deg);
+  }
+
+  50% {
+    transform: translateY(18px) scale(1, .9) rotate(45deg);
+    border-bottom-right-radius: 40px;
+  }
+
+  75% {
+    transform: translateY(9px) rotate(67.5deg);
+  }
+
+  100% {
+    transform: translateY(0) rotate(90deg);
+  }
+}
+
+@keyframes shadow324 {
+
+  0%,
+    100% {
+    transform: scale(1, 1);
+  }
+
+  50% {
+    transform: scale(1.2, 1);
+  }
+}
+
+.layoutDiv{
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.sidebar{
+  background-color: #DADADA;
+  width: 15%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+ align-items: center;
+ font-size: 23px;
+ padding-top: 40px;
+ position: fixed;
+}
+
+.sidebar ul{
+  list-style: none;
+}
+
+.sidebar ul li{
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 10px;
+  width: 100%;
+}
+
+.sidebar ul li:hover{
+  background-color: #fff;
+}
+
+.logoutBtn{
+  background-color: blue;
+  margin-top: 20px;
+  width: 100%;
+  border-radius: 10px;
+  padding: 10px;
+  color: #fff;
+}
+
+.logoutBtn:hover{
+  background-color: rgba(0, 0, 255, 0.518);
+}
+
+.mainDiv{
+  padding-left: 200px;
+ 
+}
+
+.tweetDiv{
+  padding-top: 10px;
+}
+
+
+
+.tweetsContainer {
+  width: 100%;
+  max-width: 600px;
+  margin: 10px auto;
+  color: #0f1419;
+  font-family: Arial, sans-serif;
+}
+
+.tweetCard {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  background-color: #DADADA;
+  border-bottom: 1px solid #eff3f4;
+  transition: background 0.2s ease;
+  margin: 10px;
+}
+
+.tweetCard:hover {
+  background: #f7f9f9;
+}
+
+.tweetAvatar {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #1d9bf0;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.tweetContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.tweetHeader {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.tweetName {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.tweetUsername,
+.tweetTime,
+.tweetDot {
+  color: #536471;
+  font-size: 14px;
+}
+
+.tweetUsername {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 160px;
+}
+
+.tweetText {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.tweetActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  max-width: 420px;
+}
+
+.tweetActions button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  color: #536471;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 20px;
+  font-size: 12px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.tweetActions button:hover {
+  color: #1d9bf0;
+  background: #e8f5fd;
+}
+
+.tweetActions button:nth-child(3):hover {
+  color: #f91880;
+  background: #fde7f1;
+}
+
+.tweetStatus,
+.tweetError {
+  padding: 20px;
+  text-align: center;
+}
+
+.tweetError {
+  color: #e0245e;
+}
+
+
