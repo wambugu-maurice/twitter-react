@@ -258,8 +258,20 @@
 
 .mainDiv{
   padding-left: 200px;
+  display: flex;
+  width: 100%;
  
 }
+
+.outlet{
+  width: 70%;
+  border-right: 1px solid black;
+}
+
+.search{
+  width: 30%;
+}
+
 
 .tweetDiv{
   padding-top: 10px;
@@ -285,9 +297,7 @@
   margin: 10px;
 }
 
-.tweetCard:hover {
-  background: #f7f9f9;
-}
+
 
 .tweetAvatar {
   width: 44px;
@@ -392,4 +402,17 @@
 
 .tab{
   margin: 20px;
+}
+
+.queryDiv{
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+.queryDiv li{
+  list-style: none;
 }
