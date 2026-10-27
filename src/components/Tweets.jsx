@@ -1,4 +1,4 @@
-import { arrayRemove, arrayUnion, collection, doc, increment, onSnapshot, orderBy, query, updateDoc } from "firebase/firestore"
+import { arrayRemove, arrayUnion, collection, doc, increment, onSnapshot, orderBy, query, updateDoc, writeBatch } from "firebase/firestore"
 import { useEffect, useState } from "react"
 import { auth, db } from "../../firebase"
 import { MdOutlineReply } from "react-icons/md"
@@ -7,6 +7,7 @@ import toast from "react-hot-toast"
 import { CiHeart } from "react-icons/ci"
 import { FcLike } from "react-icons/fc"
 import { BiRepost } from "react-icons/bi"
+import useUser from "../hooks/useUser"
 
  
 
@@ -14,8 +15,10 @@ function Tweets() {
   const [tweets, setTweets] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState("")
+  const{loggedUser} =useUser()
 
   const userId = auth.currentUser.uid
+  
 
   useEffect(()=>{
     const tweetsRef = query(collection(db, "tweets"), orderBy("postedOn", "desc"))
@@ -63,6 +66,34 @@ function Tweets() {
     
   }
 
+  async function handleFollow(creatorId,alreadyFollowing) {
+    setError("")
+
+    if(creatorId === userId) return
+   
+    try {
+      const batch = writeBatch(db);
+      
+      batch.update(doc(db,"users",userId),{
+        following : alreadyFollowing ?  arrayRemove(creatorId):arrayUnion(creatorId),
+        followingCount: increment(alreadyFollowing ? -1 : 1)
+      })
+
+      batch.update(doc(db,"users",creatorId),{
+        followers: alreadyFollowing ? arrayRemove(userId): arrayRemove(userId),
+        followersCount: increment(alreadyFollowing ? -1 : 1)
+      })
+
+      await batch.commit()
+        
+    } catch (err) {
+      setError(err.message)
+      toast.error(alreadyFollowing ? "Failed to unfollow" : "Failed to follow")
+      
+    }
+    
+  }
+
 
 
   return (
@@ -75,6 +106,8 @@ function Tweets() {
     tweets.map((tweet) => {
       const alreadyLiked = tweet.likedBy?.includes(userId)
       const alreadyReweeted = tweet.retweetedBy?.includes(userId)
+      const alreadyFollowing = loggedUser?.following?.includes(tweet.userId)
+      const isOnwTweet = loggedUser?.userId === tweet.userId
       return(
         <article className="tweetCard" key={tweet.id}>
         <div className="tweetAvatar">
@@ -93,6 +126,15 @@ function Tweets() {
                 ? tweet.postedOn.toDate().toLocaleDateString()
                 : ""}
             </time>
+            <div className="follow">
+              {
+                !isOnwTweet && (
+                  <button className="followBtn" onClick={()=>handleFollow(tweet.userId,alreadyFollowing)}>
+                { alreadyFollowing ? "Unfollow" : "Follow"}
+              </button>
+                )
+              }
+            </div>
           </div>
 
           <p className="tweetText">{tweet.tweet}</p>

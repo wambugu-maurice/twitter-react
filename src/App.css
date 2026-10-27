@@ -448,3 +448,21 @@
 .followsList{
   margin: 5px;
 }
+
+.followBtn{
+  background-color: blue;
+  border-radius: 10px;
+  width: 100px;
+  margin-left: 5px;
+  color: #fff;
+}
+
+.followersDiv{
+  display: flex;
+  gap: 30px;
+  margin-bottom: 10px;
+}
+
+.followersDiv div{
+  text-align: center;
+}

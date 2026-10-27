@@ -8,6 +8,7 @@ import './App.css'
 import Profile from "./components/Profile"
 import PostsFeed from "./components/PostsFeed"
 import RepostsFeed from "./components/RepostsFeed"
+import Explore from "./components/Explore"
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route element={<ProtectedLayout />}>
                 <Route  element={<Layout />}>
                     <Route path="home" element={<Home />} />
+                    <Route path="explore" element={<Explore />} />
                     <Route path="/profile" element={<Profile />}>
                         <Route index element={<PostsFeed />} />
                         <Route path="reposts" element={<RepostsFeed />} />

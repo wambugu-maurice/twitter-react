@@ -1,7 +1,7 @@
-import { onAuthStateChanged } from "firebase/auth"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
 import { useEffect, useState } from "react"
-import { auth, db } from "../../firebase"
-import {  doc, getDoc } from "firebase/firestore"
+import {  db } from "../../firebase"
+import { doc,  onSnapshot } from "firebase/firestore"
 
 
 function useUser() {
@@ -9,19 +9,37 @@ function useUser() {
     const[error,setError]=useState("")
     const[loading,setLoading]=useState(true)
 
+  
+    
+    const auth = getAuth();
 
-    useEffect(()=>{
-        const unsub = onAuthStateChanged(auth,async(user)=>{
-            if(!user) return null
-            const userRef = doc(db,"users",user.uid)
-            const snap = await getDoc(userRef)
-            setLoggedUser( snap.exists() ? snap.data() : null)
-            setLoading(false)
+    useEffect(() => {
+        let unSubUser;
+        const unSubAuth = onAuthStateChanged(auth, (user) => {
+            if (unSubUser) unSubUser();
+
+            if (!user) {
+            setLoggedUser(null);
+            setLoading(false);
+            return;
+            }
+
+            unSubUser = onSnapshot(doc(db, "users", user.uid), (snap) => {
+            setLoggedUser(snap.exists() ? { id: snap.id, ...snap.data() } : null);
+            setLoading(false);
+            });
         },(err)=>{
             setError(err.message)
-        })
-        return ()=> unsub()
-    },[])
+        });
+
+    return () => {
+        unSubAuth();
+        if (unSubUser) unSubUser();
+    };
+    }, [auth]);
+
+
+   
   return { loggedUser,error,loading}
 }
 
