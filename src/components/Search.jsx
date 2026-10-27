@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, query, where } from "firebase/firestore"
+import { collection, getDocs, query, where } from "firebase/firestore"
 import { useEffect, useState } from "react"
 import { db } from "../../firebase"
 import toast from "react-hot-toast"
@@ -45,10 +45,11 @@ function Search() {
 
 
   return (
-    <div>
+    <div className="searchBox">
       <input placeholder="type to search" type="search" value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)} />
       <SearchResults  results={results}/>
-      {console.log(results)}
+      { error && <p className="errMsg">{error}</p>}
+      { loading && <p>searching...</p>}
     </div>
   )
 }

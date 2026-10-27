@@ -411,8 +411,40 @@
   justify-content: center;
   align-items: center;
   margin: 10px;
+ 
 }
 
 .queryDiv li{
   list-style: none;
+  
+}
+
+.searchCard{
+  margin-left: 100px;
+
+}
+
+.searchBox input{
+  margin: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.searchBox{
+  position: sticky;
+  top: 10px;
+}
+
+.moreBtn{
+  background-color: blue;
+  width: 100px;
+  padding: 5px;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+}
+
+.followsList{
+  margin: 5px;
 }

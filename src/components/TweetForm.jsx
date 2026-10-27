@@ -65,8 +65,10 @@ function TweetForm({ label }) {
           onChange={(e) => setTweet(e.target.value)}
           name="tweets"
           resize="none"
+          border={"1px solid black"}
+          width={"90%"}
         />
-        <Button type="submit" colorScheme="green" isDisabled={isLoading || tweet.length < 2}>
+        <Button margin={"10px"} type="submit" colorScheme="green" isDisabled={isLoading || tweet.length < 2}>
           {isLoading ? "Posting..." : "Post"}
         </Button>
       </form>
