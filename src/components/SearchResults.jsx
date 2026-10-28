@@ -1,29 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { db } from "../../firebase";
-import { collection, getDocs, limit, orderBy, query, startAfter } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+} from "firebase/firestore";
+import StatsForNerds from "./StatsForNerds";
+import MostFollowed from "./MostFollowed";
 
 function SearchResults({ results }) {
-  const[toFollow,setToFollow]=useState([])
-  const[lastDoc,setLastDoc]=useState(null)
-  const[hasMore,setHasMore]=useState(true)
+  const [toFollow, setToFollow] = useState([]);
+  const [lastDoc, setLastDoc] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
 
-  const loadFollows = async ()=> {
-    const q = lastDoc ? query(collection(db,"users"),
-                        orderBy("registeredOn","desc"),
-                        startAfter(lastDoc),limit(3)):
-                        query(collection(db,"users"),
-                        orderBy("registeredOn","desc"),
-                         limit(3))
-    const snap = await getDocs(q)
-    const fetchedFollows = snap.docs.map((doc)=>({id: doc.id,...doc.data()}))
+  const loadFollows = async () => {
+    const q = lastDoc
+      ? query(
+          collection(db, "users"),
+          orderBy("registeredOn", "desc"),
+          startAfter(lastDoc),
+          limit(3),
+        )
+      : query(
+          collection(db, "users"),
+          orderBy("registeredOn", "desc"),
+          limit(3),
+        );
+    const snap = await getDocs(q);
+    const fetchedFollows = snap.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
     setToFollow(fetchedFollows);
-    setLastDoc(snap.docs[snap.docs.length - 1] ?? lastDoc)
-    if(snap.docs.length < 3) setHasMore(false)
-    
-  }
-useState(()=>{
-  loadFollows()
-},[])
+    setLastDoc(snap.docs[snap.docs.length - 1] ?? lastDoc);
+    if (snap.docs.length < 3) setHasMore(false);
+  };
+  useEffect(() => {
+    loadFollows();
+  }, []);
 
   return (
     <div className="queryDiv">
@@ -46,18 +63,24 @@ useState(()=>{
           </article>
         );
       })}
-      
-        <>
-        <h2><strong>Popular creatives</strong></h2>
-        {
-          toFollow.map((follow)=>(
+
+      <>
+        <h2>
+          <strong>Popular creatives</strong>
+        </h2>
+        {toFollow.map((follow) => (
           <div key={follow.id}>
-              
-              <li className="followsList" >{follow.name}</li>
+            <li className="followsList">{follow.name}</li>
           </div>
         ))}
-        </>
-      { hasMore && <button className="moreBtn" onClick={loadFollows}>Load more</button>}
+      </>
+      {hasMore && (
+        <button className="moreBtn" onClick={loadFollows}>
+          Load more
+        </button>
+      )}
+      <StatsForNerds />
+      <MostFollowed />
     </div>
   );
 }

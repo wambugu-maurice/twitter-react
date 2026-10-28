@@ -289,12 +289,11 @@
 
 .tweetCard {
   display: flex;
-  gap: 12px;
   padding: 16px;
   background-color: #DADADA;
   border-bottom: 1px solid #eff3f4;
   transition: background 0.2s ease;
-  margin: 10px;
+ margin: 5px;
 }
 
 
@@ -465,4 +464,20 @@
 
 .followersDiv div{
   text-align: center;
+}
+
+.statsCard{
+  width: 250px;
+  background-color: #B8AE9C;
+  margin-left: 40px;
+  margin-top: 10px;
+  padding: 15px;
+}
+
+.exploreDiv input{
+  border: 1px solid black;
+  width: 300px;
+  margin-top: 10px;
+  padding: 6px;
+  border-radius: 10px;
 }
