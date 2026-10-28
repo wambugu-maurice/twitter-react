@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react"
-import StatsForNerds from "./StatsForNerds"
-import MostFollowed from "./MostFollowed"
 import { collection, getDocs, query, where } from "firebase/firestore"
 import { db } from "../../firebase"
 import { MdOutlineReply } from "react-icons/md"

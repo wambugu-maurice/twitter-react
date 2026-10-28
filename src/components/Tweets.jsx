@@ -22,10 +22,12 @@ function Tweets() {
     })
     return ()=> unsub()
   },[])
-  return (<>
-    <TweetCard tweets={tweets} isLoading={isLoading} error={error} handleFollow=        {handleFollow} handleLikeTweet={handleLikeTweet} handleRepost={handleRepost}/>
 
-    <PostsFeed  tweets={tweets} isLoading={isLoading} error={error} handleFollow=        {handleFollow} handleLikeTweet={handleLikeTweet} handleRepost={handleRepost}/>
+  
+  return (<>
+    <TweetCard tweets={tweets} isLoading={isLoading} error={error} handleFollow={handleFollow} handleLikeTweet={handleLikeTweet} handleRepost={handleRepost}/>
+
+    <PostsFeed  tweets={tweets} isLoading={isLoading} error={error} handleFollow={handleFollow} handleLikeTweet={handleLikeTweet} handleRepost={handleRepost}/>
     </>
   )
 }

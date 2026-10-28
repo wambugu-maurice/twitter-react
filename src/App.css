@@ -293,7 +293,8 @@
   background-color: #DADADA;
   border-bottom: 1px solid #eff3f4;
   transition: background 0.2s ease;
- margin: 5px;
+  margin: 5px;
+  gap: 10px;
 }
 
 

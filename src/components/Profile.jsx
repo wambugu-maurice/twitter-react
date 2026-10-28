@@ -1,9 +1,21 @@
 import { onAuthStateChanged } from "firebase/auth";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { auth, db } from "../../firebase";
-import { doc, onSnapshot } from "firebase/firestore";
+import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { NavLink, Outlet } from "react-router-dom";
-
+import toast from "react-hot-toast";
+import {
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  Button,
+  Input,
+  useDisclosure,
+} from "@chakra-ui/react";
 const tabs = [
   { path: "", label: "Posts", end: true },
   { path: "reposts", label: "Reposts" },
@@ -11,6 +23,10 @@ const tabs = [
 
 function Profile() {
   const [currentLoggedUser, setCurrentLoggedUser] = useState(null);
+  const [bio, setBio] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = React.useRef();
 
   useEffect(() => {
     let snapshot;
@@ -29,6 +45,25 @@ function Profile() {
     };
   }, []);
 
+  async function handleBio(e) {
+    e.preventDefault();
+
+    if (!currentLoggedUser?.id) return;
+    if (!bio.trim()) return;
+
+    setLoading(true);
+    try {
+      const userRef = doc(db, "users", currentLoggedUser.id);
+      await updateDoc(userRef, { bio: bio.trim() });
+      toast.success("Bio updated");
+      onClose();
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <section>
       <div className="userCard">
@@ -41,6 +76,7 @@ function Profile() {
               <strong>{currentLoggedUser?.name}</strong>
             </h2>
             <small> @{currentLoggedUser?.name}</small>
+            <p>{currentLoggedUser?.bio}</p>
           </div>
           <div className="followersDiv">
             <div>
@@ -53,7 +89,46 @@ function Profile() {
               <h2>
                 <strong>Following</strong>
               </h2>
-              {currentLoggedUser?.followingCount}
+              {currentLoggedUser?.followingCount ?? 0}
+            </div>
+            <div>
+              <Button ref={btnRef} colorScheme="blue" onClick={onOpen}>
+                Update your bio
+              </Button>
+
+              <Drawer
+                isOpen={isOpen}
+                placement="right"
+                onClose={onClose}
+                finalFocusRef={btnRef}
+              >
+                <DrawerOverlay />
+                <DrawerContent as="form" onSubmit={handleBio}>
+                  <DrawerCloseButton />
+                  <DrawerHeader>Add a bio</DrawerHeader>
+
+                  <DrawerBody>
+                    <Input
+                      placeholder="Type here..."
+                      value={bio}
+                      onChange={(e) => setBio(e.target.value)}
+                    />
+                  </DrawerBody>
+
+                  <DrawerFooter>
+                    <Button variant="outline" mr={3} onClick={onClose}>
+                      Cancel
+                    </Button>
+                    <Button
+                      colorScheme="blue"
+                      type="submit"
+                      isLoading={loading}
+                    >
+                      Save
+                    </Button>
+                  </DrawerFooter>
+                </DrawerContent>
+              </Drawer>
             </div>
           </div>
         </div>

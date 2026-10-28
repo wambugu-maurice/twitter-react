@@ -16,7 +16,6 @@ function RepostsFeed({isLoading}) {
       const unsub = onSnapshot(retweetRef,(snap)=>{
         const retweets = snap.docs.map((doc)=>({id: doc.id,...doc.data()}))
         setTweets(retweets)
-        console.log(retweets)
       },(err)=>{
         setError(err.message)
       })
