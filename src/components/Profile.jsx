@@ -17,7 +17,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 const tabs = [
-  { path: "", label: "Posts", end: true },
+  { path: "", label: "Posts",},
   { path: "reposts", label: "Reposts" },
 ];
 
@@ -29,19 +29,34 @@ function Profile() {
   const btnRef = React.useRef();
 
   useEffect(() => {
-    let snapshot;
-    const unsub = onAuthStateChanged(auth, async (user) => {
-      if (!user) return setCurrentLoggedUser(null);
+    let unsubUser = null;
+
+    const unsubAuth = onAuthStateChanged(auth, (user) => {
+      if (unsubUser) {
+        unsubUser();
+        unsubUser = null;
+      }
+
+      if (!user) {
+        setCurrentLoggedUser(null);
+        return;
+      }
+
       const userRef = doc(db, "users", user.uid);
-      snapshot = onSnapshot(userRef, (snap) => {
-        setCurrentLoggedUser(
-          snap.exists ? { id: snap.id, ...snap.data() } : null,
-        );
-      });
+      unsubUser = onSnapshot(
+        userRef,
+        (snap) => {
+          setCurrentLoggedUser(
+            snap.exists() ? { id: snap.id, ...snap.data() } : null,
+          );
+        },
+        (err) => toast.error(err),
+      );
     });
+
     return () => {
-      unsub();
-      if (snapshot) snapshot();
+      unsubAuth();
+      if (unsubUser) unsubUser();
     };
   }, []);
 
@@ -135,7 +150,7 @@ function Profile() {
         <div className="userActivity">
           <nav className="tabs">
             {tabs.map((t) => (
-              <NavLink key={t.label} to={t.path} className="tab">
+              <NavLink key={t.label} to={t.path} className="tab" end replace={true}>
                 {t.label}
               </NavLink>
             ))}

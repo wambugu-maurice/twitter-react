@@ -35,7 +35,7 @@ function SearchResults({ results }) {
       ...doc.data(),
     }));
     setToFollow(fetchedFollows);
-    setLastDoc(snap.docs[snap.docs.length - 1] ?? lastDoc);
+    setLastDoc(snap.docs.at(-1) ?? lastDoc);
     if (snap.docs.length < 3) setHasMore(false);
   };
   useEffect(() => {

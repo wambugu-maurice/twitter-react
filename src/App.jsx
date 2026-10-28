@@ -16,7 +16,7 @@ function App() {
         <Routes>
             <Route element={<ProtectedLayout />}>
                 <Route  element={<Layout />}>
-                    <Route path="home" element={<Home />} />
+                    <Route index element={<Home />} />
                     <Route path="explore" element={<Explore />} />
                     <Route path="/profile" element={<Profile />}>
                         <Route index element={<PostsFeed />} />

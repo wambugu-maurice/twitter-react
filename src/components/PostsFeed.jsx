@@ -13,14 +13,17 @@ function PostsFeed({isLoading,error}) {
 
 
 useEffect(()=>{
-  if (!userId) return;
+  if (!userId) {
+    setTweets([])
+    return
+  };
   const tweetsRef = query(collection(db,"tweets"),where("userId","==",userId))
   const snap = onSnapshot(tweetsRef,(doc)=>{
     const tweets = doc.docs.map((tweet)=>({
       id: tweet.id,...tweet.data()
       }))
-    setTweets(tweets)
-  })
+    setTweets(tweets)}
+)
   return snap
 },[userId])
 

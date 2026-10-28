@@ -482,3 +482,8 @@
   padding: 6px;
   border-radius: 10px;
 }
+
+nav a.active {
+  font-weight: bold;
+  color: royalblue;
+}

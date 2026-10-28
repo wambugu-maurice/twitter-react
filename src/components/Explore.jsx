@@ -19,6 +19,7 @@ function Explore() {
     const { handleFollow, handleLikeTweet, handleRepost } = useTweetActions()
 
     useEffect(()=>{
+      let ignore = false
       setError("")
       setLoading(true)
 
@@ -35,19 +36,21 @@ function Explore() {
                                 where("tweet","<=",searchQuery + '\uf8ff'))
             const snapshot = await getDocs(q)
             const results = snapshot.docs.map((doc)=>({id: doc.id,...doc.data()}))
-            setSearchTweets(prev => [...prev,...results])
+             if(!ignore)setSearchTweets(results)
           
         } catch (err) {
-          setError(err.message)
-          setLoading(false)
+          if(!ignore)setError(err.message)
           
         }finally{
-          setLoading(false)
+         if(!ignore) setLoading(false)
         }
         
       }, 400);
 
-      return ()=> clearTimeout(timer)
+      return ()=> {
+        ignore = true
+        clearTimeout(timer)
+      }
     },[searchQuery])
      
 
